@@ -1,0 +1,43 @@
+# pyproject.toml
+[build-system]
+requires = ["setuptools>=69.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ion_cannon"
+version = "0.1.0"
+description = "Multi-LLM Content Collection and Analysis System"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "llama-index>=0.9.0",
+    "openai>=1.0.0",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.1.0",
+    "rich>=13.0.0",
+    "typer>=0.9.0",
+    "llama-index-readers-web>=0.3.1",
+    "llama-index-llms-ollama>=0.4.2",
+    "html2text>=2024.2.26",
+    "crawl4ai>=0.4.23",
+    "llama-index-readers-reddit>=0.3.0",
+    "asyncpraw>=7.2.0",
+    "llama-index-readers-twitter>=0.3.0",
+    "trafilatura>=2.0.0",
+]
+
+[project.scripts]
+ion-cannon = "ion_cannon.main:app"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+fix = true
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-cov>=4.1.0",
+    "pytest-asyncio>=0.23.0",
+]

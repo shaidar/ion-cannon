@@ -1,4 +1,9 @@
-# Ion Cannon
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/a63da5b7-0b27-4b59-b472-2ab9a04a7f10" alt="Centered Image">
+</div>
+
+---
+# ION Cannon
 
 A high-powered content collection and analysis system that uses multiple Large Language Models (LLMs) to collect, validate, and summarize content from various sources. It helps you stay up-to-date with the latest information by automatically filtering and processing content based on your interests.
 

@@ -45,9 +45,7 @@ class ContentSummarizer(BaseProcessor):
         {{
             "title": "Use existing or generate if missing",
             "summary": "2-3 sentences focusing on key points",
-            "nofluff_take": "Key insights that are possibly contrarian/thought-provoking",
-            "ciso_takeaway": "Strategic initiatives and organizational security improvements",
-            "security_engineer_thoughts": "Technical insights and actionable steps"
+            "insight_take": "Key insights that are possibly contrarian/thought-provoking",
         }}"""
 
     async def process(self, item: ContentItem) -> Dict:
@@ -57,9 +55,7 @@ class ContentSummarizer(BaseProcessor):
             return {
                 "title": item.title or "Untitled",
                 "summary": "Summarization skipped - no LLM available",
-                "nofluff_take": "No insights available",
-                "ciso_takeaway": "No CISO takeaway available",
-                "security_engineer_thoughts": "No technical insights available",
+                "insight_take": "No insights available",
                 "summarization_status": "skipped"
             }
 
@@ -80,9 +76,7 @@ class ContentSummarizer(BaseProcessor):
             return {
                 "title": item.title or "Error Processing Title",
                 "summary": "Error generating summary",
-                "nofluff_take": "Error generating insights",
-                "ciso_takeaway": "Error generating CISO takeaway",
-                "security_engineer_thoughts": "Error generating technical insights",
+                "insight_take": "Error generating insights",
                 "error": str(e),
                 "summarization_status": "error"
             }

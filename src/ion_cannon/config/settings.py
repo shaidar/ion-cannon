@@ -37,8 +37,8 @@ class Settings(BaseSettings):
     LOGS_DIR: Path = Path("./logs")
     
     # Reddit
-    REDDIT_CLIENT_ID: str = os.getenv("REDDIT_CLIENT_ID")
-    REDDIT_CLIENT_SECRET: str = os.getenv("REDDIT_CLIENT_SECRET")
+    REDDIT_CLIENT_ID: str = os.getenv("REDDIT_CLIENT_ID", "")
+    REDDIT_CLIENT_SECRET: str = os.getenv("REDDIT_CLIENT_SECRET", "")
     REDDIT_USER_AGENT: str = "ion_cannon"
     
     REDDIT_CHANNELS: List[str] = []

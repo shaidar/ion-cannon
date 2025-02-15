@@ -296,7 +296,7 @@ Generated: {timestamp}
                     url=item.get("url", "N/A"),
                     date=item.get("date", "N/A"),
                     summary=item.get("summary", "No summary available"),
-                    insights=item.get("nofluff_take", "No insights available"),
+                    insights=item.get("insight_take", "No insights available"),
                 )
             )
         

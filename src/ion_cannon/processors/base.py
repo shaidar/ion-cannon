@@ -19,9 +19,7 @@ class Summary(BaseModel):
     
     title: str = Field(..., description="Content title")
     summary: str = Field(..., description="Brief summary")
-    nofluff_take: str = Field(..., description="Key insights")
-    ciso_takeaway: str = Field(..., description="CISO-level takeaways")
-    security_engineer_thoughts: str = Field(..., description="Technical insights")
+    insight_take: str = Field(..., description="Key insights")
 
 class BaseProcessor(ABC):
     """Abstract base class for content processors."""

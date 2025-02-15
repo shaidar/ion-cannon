@@ -3,9 +3,10 @@ import json
 import logging
 from typing import Dict, Optional
 
+from ion_cannon.config import settings
 from ion_cannon.collectors.base import ContentItem
 from ion_cannon.core.llm_factory import LLMFactory
-from ion_cannon.processors.base import BaseProcessor, Summary
+from ion_cannon.processors.base import BaseProcessor
 
 logger = logging.getLogger(__name__)
 
@@ -36,17 +37,10 @@ class ContentSummarizer(BaseProcessor):
 
     def _get_summary_prompt(self, title: Optional[str], content: str) -> str:
         """Generate the summarization prompt."""
-        return f"""Analyze this AI security content and provide a structured summary.
-
-        Title: {title or 'Untitled'}
-        Content: {content[:2500]}
-
-        Return a JSON object with:
-        {{
-            "title": "Use existing or generate if missing",
-            "summary": "2-3 sentences focusing on key points",
-            "insight_take": "Key insights that are possibly contrarian/thought-provoking",
-        }}"""
+        return settings.SUMMARY_PROMPT_TEMPLATE.format(
+            title=title or 'Untitled',
+            content=content[:2500]
+        )
 
     async def process(self, item: ContentItem) -> Dict:
         """Process a content item to generate a structured summary."""

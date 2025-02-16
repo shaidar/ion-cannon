@@ -24,6 +24,7 @@ app = typer.Typer(
 )
 console = Console()
 
+
 async def run_collection(
     multi_llm: bool,
     output_dir: Optional[Path],
@@ -32,7 +33,7 @@ async def run_collection(
     """Run the content collection and processing pipeline."""
     logger.info("Starting collection pipeline")
     collector = ContentCollector(use_multi_llm=multi_llm, verbose=verbose)
-    
+
     with Progress(
         SpinnerColumn(),
         TextColumn("[progress.description]{task.description}"),
@@ -41,45 +42,45 @@ async def run_collection(
     ) as progress:
         # Setup progress tracking
         overall_task: TaskID = progress.add_task(
-            "Running collection pipeline...",
-            total=3
+            "Running collection pipeline...", total=3
         )
-        
+
         # Collection phase
         progress.update(overall_task, description="Collecting content...")
         content = await collector.collect()
-        
+
         if not content:
             logger.warning("No content collected")
             console.print("[yellow]No content collected.")
             return
-            
+
         progress.advance(overall_task)
         logger.info(f"Collected {len(content)} items")
         console.print(f"[green]Collected {len(content)} items")
-        
+
         # Processing phase
         progress.update(overall_task, description="Processing content...")
         results = await collector.process_content(content)
-        
+
         if not results:
             logger.warning("No relevant content found after processing")
             console.print("[yellow]No relevant content found after processing.")
             return
-            
+
         progress.advance(overall_task)
         logger.info(f"Found {len(results)} relevant items")
         console.print(f"[green]Found {len(results)} relevant items")
-        
+
         # Saving phase
         if output_dir:
             settings.OUTPUT_DIR = output_dir
-            
+
         progress.update(overall_task, description="Saving results...")
         collector.save_results(results)
         progress.advance(overall_task)
-        
+
     logger.info("Collection pipeline completed")
+
 
 @app.command()
 def collect(
@@ -117,6 +118,7 @@ def collect(
             console.print_exception()
         raise typer.Exit(1)
 
+
 @app.command()
 def sources(
     verbose: bool = typer.Option(
@@ -133,7 +135,7 @@ def sources(
         return
 
     console.print("[bold]Configured Sources[/bold]")
-    
+
     if settings.RSS_FEEDS:
         console.print("\n[cyan]RSS Feeds:[/cyan]")
         for feed in settings.RSS_FEEDS:
@@ -148,20 +150,25 @@ def sources(
             if verbose:
                 console.print(f"  {url}")
         if not verbose:
-            console.print(f"  {len(settings.REDDIT_CHANNELS)} reddit channels configured")
-            
+            console.print(
+                f"  {len(settings.REDDIT_CHANNELS)} reddit channels configured"
+            )
+
     logger.info("Finished listing sources")
+
 
 @app.command()
 def version():
     """Show Ion Cannon version information."""
     from importlib.metadata import version as get_version
+
     try:
         version = get_version("ion_cannon")
     except:
         version = "dev"
-    
+
     console.print(f"Ion Cannon v{version}")
+
 
 if __name__ == "__main__":
     app()

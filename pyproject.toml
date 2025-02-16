@@ -25,6 +25,7 @@ dependencies = [
     "asyncpraw>=7.2.0",
     "llama-index-readers-twitter>=0.3.0",
     "trafilatura>=2.0.0",
+    "pre-commit>=4.1.0",
 ]
 
 [project.scripts]

@@ -17,13 +17,14 @@ Respond with a JSON object containing exactly these fields:
     "insight_take": "Key insights that are possibly contrarian/thought-provoking"
 }}"""
 
+
 class Settings(BaseSettings):
     """Application settings."""
-    
+
     # Optional API keys that read from environment
     OPENAI_API_KEY: Optional[str] = Field(
         description="OpenAI API key for GPT models",
-        default_factory=lambda: os.getenv("OPENAI_API_KEY")
+        default_factory=lambda: os.getenv("OPENAI_API_KEY"),
     )
 
     # Default configurations
@@ -32,8 +33,10 @@ class Settings(BaseSettings):
     LLM_TEMPERATURE: float = 0.7
     LLM_MAX_TOKENS_RESPONSE: int = 131072
     LLM_VALIDATOR_CONFIDENCE: float = 0.5  # Default confidence for fallbacks
-    LLM_CONFIDENCE_THRESHOLD: float = 0.9  # Minimum confidence required to consider valid
-    
+    LLM_CONFIDENCE_THRESHOLD: float = (
+        0.9  # Minimum confidence required to consider valid
+    )
+
     # Multi-LLM Configuration
     VALIDATOR1_PROVIDER: str = "ollama"
     VALIDATOR1_MODEL: str = "mistral:instruct"
@@ -46,12 +49,12 @@ class Settings(BaseSettings):
     BASE_DIR: Path = Path("./data")
     OUTPUT_DIR: Path = Path("./data/output")
     LOGS_DIR: Path = Path("./logs")
-    
+
     # Reddit
     REDDIT_CLIENT_ID: str = os.getenv("REDDIT_CLIENT_ID", "")
     REDDIT_CLIENT_SECRET: str = os.getenv("REDDIT_CLIENT_SECRET", "")
     REDDIT_USER_AGENT: str = "ion_cannon"
-    
+
     REDDIT_CHANNELS: List[str] = []
     REDDIT_POST_LIMIT: int = 30
 
@@ -139,7 +142,7 @@ class Settings(BaseSettings):
         # "https://www.troyhunt.com/rss/",
         # "https://www.welivesecurity.com/en/rss/feed/",
     ]
-    
+
     # If list is modified, remember to modify Google Alert
     KEYWORDS: List[str] = [
         "ai security",
@@ -185,8 +188,9 @@ class Settings(BaseSettings):
 
     SUMMARY_PROMPT_TEMPLATE: str = Field(
         default=SUMMARY_PROMPT_TEMPLATE,
-        description="Template for content summarization"
+        description="Template for content summarization",
     )
+
 
 # Global settings instance
 settings = Settings()

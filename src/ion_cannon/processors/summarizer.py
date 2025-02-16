@@ -10,9 +10,10 @@ from ion_cannon.processors.base import BaseProcessor
 
 logger = logging.getLogger(__name__)
 
+
 class ContentSummarizer(BaseProcessor):
     """Generates structured summaries of content using LLM."""
-    
+
     def __init__(self, use_dedicated_llm: bool = False, verbose: bool = False):
         self.use_dedicated_llm = use_dedicated_llm
         self.verbose = verbose
@@ -25,12 +26,12 @@ class ContentSummarizer(BaseProcessor):
                 self.llm = LLMFactory.create_summarization_llm(required=False)
             else:
                 self.llm = LLMFactory.create_llm(require_llm=False)
-                
+
             if self.llm:
                 logger.info("Initialized summarization LLM")
             else:
                 logger.warning("No summarizer available, summarization will be skipped")
-                
+
         except Exception as e:
             logger.error(f"Failed to initialize summarizer: {str(e)}")
             self.llm = None
@@ -38,8 +39,7 @@ class ContentSummarizer(BaseProcessor):
     def _get_summary_prompt(self, title: Optional[str], content: str) -> str:
         """Generate the summarization prompt."""
         return settings.SUMMARY_PROMPT_TEMPLATE.format(
-            title=title or 'Untitled',
-            content=content[:2500]
+            title=title or "Untitled", content=content[:2500]
         )
 
     async def process(self, item: ContentItem) -> Dict:
@@ -50,7 +50,7 @@ class ContentSummarizer(BaseProcessor):
                 "title": item.title or "Untitled",
                 "summary": "Summarization skipped - no LLM available",
                 "insight_take": "No insights available",
-                "summarization_status": "skipped"
+                "summarization_status": "skipped",
             }
 
         try:
@@ -58,13 +58,13 @@ class ContentSummarizer(BaseProcessor):
                 self._get_summary_prompt(item.title, item.content)
             )
             result = json.loads(response.text.strip())
-            
+
             if self.verbose:
                 logger.debug(f"Generated summary for: {item.url}")
-                
+
             result["summarization_status"] = "success"
             return result
-            
+
         except Exception as e:
             logger.error(f"Summarization failed for {item.url}: {str(e)}")
             return {
@@ -72,5 +72,5 @@ class ContentSummarizer(BaseProcessor):
                 "summary": "Error generating summary",
                 "insight_take": "Error generating insights",
                 "error": str(e),
-                "summarization_status": "error"
+                "summarization_status": "error",
             }

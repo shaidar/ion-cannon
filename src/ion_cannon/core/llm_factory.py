@@ -11,6 +11,7 @@ from ion_cannon.config.settings import settings
 
 logger = logging.getLogger("ion_cannon")
 
+
 class LLMFactory:
     """Factory class for creating LLM instances."""
 
@@ -32,7 +33,7 @@ class LLMFactory:
                         raise ValueError(msg)
                     logger.warning(msg)
                     return None
-                
+
                 llm = OpenAI(
                     api_key=settings.OPENAI_API_KEY,
                     model=model,
@@ -42,7 +43,7 @@ class LLMFactory:
                 )
                 Settings.llm = llm
                 return llm
-                
+
             elif provider.lower() == "ollama":
                 llm = Ollama(
                     model=model,
@@ -51,14 +52,14 @@ class LLMFactory:
                 )
                 Settings.llm = llm
                 return llm
-                
+
             else:
                 msg = f"Unsupported LLM provider: {provider}"
                 if require_llm:
                     raise ValueError(msg)
                 logger.warning(msg)
                 return None
-                
+
         except Exception as e:
             msg = f"Failed to create LLM instance: {str(e)}"
             if require_llm:
@@ -67,20 +68,22 @@ class LLMFactory:
             return None
 
     @staticmethod
-    def create_validation_llms(require_both: bool = True) -> Tuple[Optional[LLM], Optional[LLM]]:
+    def create_validation_llms(
+        require_both: bool = True,
+    ) -> Tuple[Optional[LLM], Optional[LLM]]:
         """Create LLM instances for content validation."""
         validator1 = LLMFactory.create_llm(
             provider=settings.VALIDATOR1_PROVIDER,
             model=settings.VALIDATOR1_MODEL,
-            require_llm=require_both
+            require_llm=require_both,
         )
-        
+
         validator2 = LLMFactory.create_llm(
             provider=settings.VALIDATOR2_PROVIDER,
             model=settings.VALIDATOR2_MODEL,
-            require_llm=require_both
+            require_llm=require_both,
         )
-        
+
         return validator1, validator2
 
     @staticmethod
@@ -89,5 +92,5 @@ class LLMFactory:
         return LLMFactory.create_llm(
             provider=settings.SUMMARIZER_PROVIDER,
             model=settings.SUMMARIZER_MODEL,
-            require_llm=required
+            require_llm=required,
         )
